@@ -22,7 +22,7 @@ def get_cgsn(self):
     cgsn_response = send_at_command_and_get_response('AT+CGSN')
     if len(cgsn_response) > 0:
         # Set the IMEI
-        self.imei_label.configure(text=f"IMEI: {cgsn_response[0]}")
+        self.imei_label.configure(text=f"IMEI: {cgsn_response[0]} {cgsn_response[1]}")
     else:
         self.imei_label.configure(text="IMEI not found.")
     return None

@@ -3,6 +3,8 @@ import os
 from PIL import Image, ImageTk
 import threading
 from gui_logic.ati_cgsn_cclk_check import initialize_info
+from gui_components.parent_panel import Panel
+import at_commands
 
 LOADING = False
 
@@ -51,6 +53,13 @@ class GeneralFrame(ctk.CTkFrame):
         self.imei_label.grid(column=2, row=1,
                             padx=10, pady=5,
                             sticky="nsw")
+        
+        # Create the SIM info panel
+        self.sim_info_panel = ctk.CTkFrame(self)
+        self.sim_info_panel.grid(column=0,
+                                row=3,
+                                padx=10, pady=10,
+                                sticky="nsew")
 
 
 class App(ctk.CTk):
@@ -79,8 +88,11 @@ class App(ctk.CTk):
         self.gral_frame = GeneralFrame(master=self)
         self.gral_frame.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 
+        # Create the COPS panel
+        cops_panel = Panel(master=self.gral_frame, column=0, row=3, distribution='horizontal', at_command=at_commands.cops)
+
         # Load the modem information
-        
+
         self.start_thread(initialize_info, self.gral_frame, LOADING)
 
 
@@ -88,6 +100,7 @@ class App(ctk.CTk):
     def start_thread(self, target, *args):
         threading.Thread(target=target, args=args).start()
 
-
+# Create an instance of App
 app = App()
+# Start the main loop (so the window is always displayed)
 app.mainloop()
