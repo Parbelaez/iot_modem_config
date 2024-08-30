@@ -102,6 +102,11 @@ class App(ctk.CTk):
         cops_panel = Panel(
             master=self.panels_frame, column=0, row=2,
             distribution='horizontal', at_command=at_commands.cops)
+        
+        # Create the CREG panel
+        creg_panel = Panel(
+            master=self.panels_frame, column=1, row=0,
+            distribution='vertical', at_command=at_commands.creg)
 
         # Load the modem information
         # self.start_thread(initialize_info, self.gral_frame, LOADING)
