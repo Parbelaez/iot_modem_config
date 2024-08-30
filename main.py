@@ -39,7 +39,7 @@ class App(ctk.CTk):
         self.geometry("1700x1080")
 
         # Check if the icon path is correct
-        icon_path = os.path.join("assets", "icon32x32.png")
+        icon_path = os.path.join("assets", "icon.png")
         if os.path.exists(icon_path):
             self.iconpath = ImageTk.PhotoImage(file=icon_path)
             self.iconphoto(False, self.iconpath)
