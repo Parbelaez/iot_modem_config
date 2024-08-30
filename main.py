@@ -14,6 +14,7 @@ class GeneralFrame(ctk.CTkFrame):
         super().__init__(master, **kwargs)
 
         # Configure rows and columns of the GeneralFrame to expand
+        self.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
         self.grid_columnconfigure((0, 1, 2), weight=1)
         self.grid_rowconfigure((0, 1), weight=0)
         self.grid_rowconfigure(2, weight=1)
@@ -28,10 +29,11 @@ class GeneralFrame(ctk.CTkFrame):
         # Create the extra information frame
         self.extra_info_frame = ctk.CTkFrame(self)
         self.extra_info_frame.grid(column=0, columnspan=3,
-                                row=2,
+                                row=1,
                                 padx=10, pady=10,
                                 sticky="n")
-        self.extra_info_frame.grid_columnconfigure((0, 1, 2), weight=0)
+        self.extra_info_frame.grid_columnconfigure((0), weight=0)
+        self.extra_info_frame.configure(bg_color="green")
 
         # Create the clock label
         self.clock_label = ctk.CTkLabel(
@@ -55,11 +57,11 @@ class GeneralFrame(ctk.CTkFrame):
                             sticky="nsw")
         
         # Create the SIM info panel
-        self.sim_info_panel = ctk.CTkFrame(self)
-        self.sim_info_panel.grid(column=0,
-                                row=3,
-                                padx=10, pady=10,
-                                sticky="nsew")
+        # self.sim_info_panel = ctk.CTkFrame(self)
+        # self.sim_info_panel.grid(column=0,
+        #                         row=3,
+        #                         padx=10, pady=10,
+        #                         sticky="nsew")
 
 
 class App(ctk.CTk):
@@ -86,14 +88,33 @@ class App(ctk.CTk):
 
         # Create the main frame
         self.gral_frame = GeneralFrame(master=self)
-        self.gral_frame.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+        self.gral_frame.configure(fg_color="white")
 
-        # Create the COPS panel
-        cops_panel = Panel(master=self.gral_frame, column=0, row=3, distribution='horizontal', at_command=at_commands.cops)
+        # Create Panels Frame
+        self.panels_frame = ctk.CTkFrame(self.gral_frame)
+        self.panels_frame.grid(column=0, row=2, columnspan=3, sticky="nsew",
+                                padx=10, pady=10)
+        self.panels_frame.grid_columnconfigure((0, 1, 2), weight=1)
+        self.panels_frame.grid_rowconfigure((0, 1, 2), weight=1)
+        self.panels_frame.configure(fg_color="blue")
+
+        # Create the CIMI panel
+        cimi_panel = Panel(
+            master=self.panels_frame, column=0, row=0,
+            distribution='horizontal', at_command=at_commands.cimi)
+        
+        # # Create the QCCID panel
+        qccid_panel = Panel(
+            master=self.panels_frame, column=0, row=1,
+            distribution='horizontal', at_command=at_commands.qccid)
+
+        # # Create the COPS panel
+        cops_panel = Panel(
+            master=self.panels_frame, column=0, row=2,
+            distribution='horizontal', at_command=at_commands.cops)
 
         # Load the modem information
-
-        self.start_thread(initialize_info, self.gral_frame, LOADING)
+        # self.start_thread(initialize_info, self.gral_frame, LOADING)
 
 
     # Start a thread method

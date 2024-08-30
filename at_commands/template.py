@@ -20,7 +20,7 @@
         ],
     ],
 
-    'Send Parameters': [
+    'send_parameters': [
         "",
         "",
         "",
