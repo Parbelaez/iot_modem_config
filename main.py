@@ -33,7 +33,6 @@ class GeneralFrame(ctk.CTkFrame):
                                 padx=10, pady=10,
                                 sticky="n")
         self.extra_info_frame.grid_columnconfigure((0), weight=0)
-        self.extra_info_frame.configure(bg_color="green")
 
         # Create the clock label
         self.clock_label = ctk.CTkLabel(
@@ -55,13 +54,6 @@ class GeneralFrame(ctk.CTkFrame):
         self.imei_label.grid(column=2, row=1,
                             padx=10, pady=5,
                             sticky="nsw")
-        
-        # Create the SIM info panel
-        # self.sim_info_panel = ctk.CTkFrame(self)
-        # self.sim_info_panel.grid(column=0,
-        #                         row=3,
-        #                         padx=10, pady=10,
-        #                         sticky="nsew")
 
 
 class App(ctk.CTk):
@@ -88,7 +80,6 @@ class App(ctk.CTk):
 
         # Create the main frame
         self.gral_frame = GeneralFrame(master=self)
-        self.gral_frame.configure(fg_color="white")
 
         # Create Panels Frame
         self.panels_frame = ctk.CTkFrame(self.gral_frame)
@@ -96,7 +87,6 @@ class App(ctk.CTk):
                                 padx=10, pady=10)
         self.panels_frame.grid_columnconfigure((0, 1, 2), weight=1)
         self.panels_frame.grid_rowconfigure((0, 1, 2), weight=1)
-        self.panels_frame.configure(fg_color="blue")
 
         # Create the CIMI panel
         cimi_panel = Panel(
