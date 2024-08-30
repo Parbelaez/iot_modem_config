@@ -2,6 +2,7 @@ import customtkinter as ctk
 import os
 from PIL import Image, ImageTk
 import threading
+from gui_logic.ati_cgsn_cclk_check import initialize_info
 
 LOADING = False
 
@@ -22,10 +23,34 @@ class GeneralFrame(ctk.CTkFrame):
                                         padx=10, pady=10)
         self.welcome_label.grid(column=0, columnspan=3, row=0, sticky="nsew")
 
+        # Create the extra information frame
+        self.extra_info_frame = ctk.CTkFrame(self)
+        self.extra_info_frame.grid(column=0, columnspan=3,
+                                row=2,
+                                padx=10, pady=10,
+                                sticky="n")
+        self.extra_info_frame.grid_columnconfigure((0, 1, 2), weight=0)
+
         # Create the clock label
         self.clock_label = ctk.CTkLabel(
-            self, text="Clock: Loading...")
-        self.clock_label.grid(column=0, columnspan=3, row=1, sticky="nsew")
+            self.extra_info_frame, text="Clock: Loading...")
+        self.clock_label.grid(column=0, row=1,
+                            padx=10, pady=5,
+                            sticky="nse")
+
+        # Create the Revison label
+        self.revision_label = ctk.CTkLabel(
+            self.extra_info_frame, text="Revision: Loading...")
+        self.revision_label.grid(column=1, row=1,
+                                padx=10, pady=5,
+                                sticky="ns")
+
+        # Create the IMEI label
+        self.imei_label = ctk.CTkLabel(
+            self.extra_info_frame, text="IMEI: Loading...")
+        self.imei_label.grid(column=2, row=1,
+                            padx=10, pady=5,
+                            sticky="nsw")
 
 
 class App(ctk.CTk):
@@ -53,6 +78,15 @@ class App(ctk.CTk):
         # Create the main frame
         self.gral_frame = GeneralFrame(master=self)
         self.gral_frame.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+
+        # Load the modem information
+        
+        self.start_thread(initialize_info, self.gral_frame, LOADING)
+
+
+    # Start a thread method
+    def start_thread(self, target, *args):
+        threading.Thread(target=target, args=args).start()
 
 
 app = App()
