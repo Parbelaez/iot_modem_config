@@ -24,10 +24,14 @@ class EditPanel(ctk.CTkFrame):
             for label_text in self.labels_text
         ]
 
-        # column = 0
-        # row = 1
+        column = 0
+        row = 1
         # Position the labels
         for i, label in enumerate(self.edit_labels):
+            # Prevents that when commands with more parameters than info fields
+            # are displayed, the program crashes
+            if len(at_command['parameters_fields_positions']) <= i:
+                break
             column = at_command['parameters_fields_positions'][i][0]
             row = at_command['parameters_fields_positions'][i][1]
             label.grid(column=column, row=row,
@@ -42,6 +46,22 @@ class EditPanel(ctk.CTkFrame):
                         entry = ctk.CTkComboBox(self, values=at_command['result_fields_values'][j])
                         entry.grid(column=column+1, row=row,
                                 padx=(5, 5), pady=(5, 0), sticky="nw")
+        if 'parameters_fields_values' in at_command:
+            print('parameters_fields_values exists')
+            for i, parameter_item in enumerate(at_command['parameters_fields_values']):
+                print('i: ', i,' - parameter_item: ', parameter_item)
+                for j,parameter_name in enumerate(at_command['parameters_fields_values'][i][0]): 
+                    for parameter in at_command['send_parameters']:
+                        if parameter_name == parameter:
+                            if at_command['parameters_fields_values'][i][1] == 'literal':
+                                entry = ctk.CTkEntry(self)
+                                entry.grid(column=column+1, row=row,
+                                        padx=(5, 5), pady=(5, 0), sticky="nw")
+                            else:
+                                entry = ctk.CTkComboBox(
+                                    self, values=at_command['parameters_fields_values'][i][1])
+                                entry.grid(column=column+1, row=row,
+                                        padx=(5, 5), pady=(5, 0), sticky="nw")
         edit_button = ctk.CTkButton(
             self, text=f'Set {at_command['short_name']}', fg_color="lightblue4",
             command=lambda: self.start_thread(

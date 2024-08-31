@@ -29,11 +29,19 @@ class InfoPanel(ctk.CTkFrame):
                     padx=(5, 5), pady=(5, 0), sticky="nw")
         
         # Create the read button
+        if len(at_command['fields_names']) == 1 and at_command['short_name'] not in ['IMSI', 'ICCID']:
+            button_column = 1
+            button_row = 0
+            label.grid(column=0, row=0, padx=(5, 5), pady=(5, 0), sticky="nw")
+        else:
+            button_column = 0
+            button_row = 0
+
         self.info_read_button = ctk.CTkButton(
             self, text=f'Check {at_command['short_name']}', command=lambda: self.start_thread(
                 general_logic.check_config, self, at_command, LOADING, ALL_BUTTONS)
         )
         self.info_read_button.grid(
-            column=0, row=0, padx=(5, 5), pady=(5, 0), sticky="we")
+            column=button_column, row=button_row, padx=(5, 5), pady=(5, 0), sticky="we")
         
         ALL_BUTTONS.append(self.info_read_button)

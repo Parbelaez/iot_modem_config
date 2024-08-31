@@ -17,16 +17,13 @@ class Panel(ctk.CTkFrame):
         # Configure rows and columns of the GeneralFrame to expand
         if len(at_command['send_parameters']) > 0:
             if distribution == 'vertical':
-                print('Vertical')
                 self.grid_rowconfigure((0, 1, 3), weight=1)
                 self.grid_columnconfigure(0, weight=1)
             else:
-                print('Horizontal')
                 self.grid_columnconfigure((0, 1), weight=1)
                 self.grid_rowconfigure((0, 1), weight=1)
                 number_of_columns = 2
         else:
-            print('No parameters')
             self.grid_rowconfigure(0, weight=1)
             self.grid_columnconfigure(0, weight=1)
         
