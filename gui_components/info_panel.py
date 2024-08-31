@@ -32,7 +32,7 @@ class InfoPanel(ctk.CTkFrame):
         if len(at_command['fields_names']) == 1 and at_command['short_name'] not in ['IMSI', 'ICCID']:
             button_column = 1
             button_row = 0
-            label.grid(column=0, row=0, padx=(5, 5), pady=(5, 0), sticky="nw")
+            label.grid(column=0, row=0, padx=(5, 5), pady=(5, 5), sticky="nw")
         else:
             button_column = 0
             button_row = 0
@@ -42,6 +42,6 @@ class InfoPanel(ctk.CTkFrame):
                 general_logic.check_config, self, at_command, LOADING, ALL_BUTTONS)
         )
         self.info_read_button.grid(
-            column=button_column, row=button_row, padx=(5, 5), pady=(5, 0), sticky="we")
+            column=button_column, row=button_row, padx=(5, 5), pady=(5, 5), sticky="we")
         
         ALL_BUTTONS.append(self.info_read_button)
