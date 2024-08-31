@@ -69,6 +69,6 @@ creg = {
     ],
 
     'parameters_fields_positions': [
-        [0, 1]
+        [0, 0]
     ]
 }

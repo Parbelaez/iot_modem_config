@@ -13,7 +13,7 @@ class GeneralFrame(ctk.CTkFrame):
 
         # Configure rows and columns of the GeneralFrame to expand
         self.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
-        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=0)
         self.grid_rowconfigure((0, 1), weight=0)
         self.grid_rowconfigure(2, weight=1)
 
@@ -109,29 +109,38 @@ class App(ctk.CTk):
         self.column_2_frame.grid_columnconfigure(0, weight=1)
         self.column_2_frame.grid_rowconfigure((0, 1, 2), weight=0)
 
+        # Create a subpanel for IMSI and ICCID
+        self.imsi_iccid_panel = ctk.CTkFrame(self.column_0_frame)
+        self.imsi_iccid_panel.grid(column=0, row=0, sticky="ns",
+                                padx=10, pady=10)
+        self.imsi_iccid_panel.grid_columnconfigure((0, 1), weight=1)
         # Create the CIMI -IMSI- panel
         cimi_panel = Panel(
-            master=self.column_0_frame, column=0, row=0,
+            master=self.imsi_iccid_panel, column=0, row=0,
             distribution='horizontal',
             at_command=at_commands.cimi, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
+        cimi_panel.grid(column=0, row=0, padx=10, pady=10, sticky="ns")
         
         # # Create the QCCID -ICCID- panel
         qccid_panel = Panel(
-            master=self.column_0_frame, column=0, row=1,
+            master=self.imsi_iccid_panel, column=1, row=0,
             distribution='horizontal'
             , at_command=at_commands.qccid, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
+        qccid_panel.grid(column=1, row=0, padx=10, pady=10, sticky="ns")
 
         # # Create the COPS -Operator Selection- panel
         cops_panel = Panel(
-            master=self.column_0_frame, column=0, row=2,
+            master=self.column_0_frame, column=0, row=1,
             distribution='horizontal',
             at_command=at_commands.cops, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
+        cops_panel.grid(column=0, row=1, columnspan=2, padx=10, pady=10, sticky="nwe")
         
         # Create the GDCONT -PDP Context- panel
         cgdcont_panel = Panel(
-            master=self.column_0_frame, column=0, row=3,
+            master=self.column_0_frame, column=0, row=2,
             distribution='horizontal',
             at_command=at_commands.cgdcont, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
+        cgdcont_panel.grid(column=0, row=2, columnspan=2, padx=10, pady=10, sticky="nw")
         
         # Create the CREG -Network Registration- panel
         creg_panel = Panel(
@@ -139,7 +148,7 @@ class App(ctk.CTk):
             distribution='vertical',
             at_command=at_commands.creg, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
 
-        # Load the modem information
+        #Load the modem information
         # self.start_thread(initialize_info, self.gral_frame, LOADING)
 
 

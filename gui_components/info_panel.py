@@ -7,8 +7,8 @@ class InfoPanel(ctk.CTkFrame):
         super().__init__(master, **kwargs)
         
         self.at_command = at_command
-        self.column = column
-        self.row = row
+        # self.column = column
+        # self.row = row
 
         self.grid(column=column, row=row, sticky="nw",
                     padx=10, pady=(10, 5))
@@ -25,8 +25,8 @@ class InfoPanel(ctk.CTkFrame):
         for i, label in enumerate(self.info_labels):
             column = at_command['info_fields_positions'][i][0]
             row = at_command['info_fields_positions'][i][1]
-            label.grid(column=column, row=row, padx=(
-                5, 0), pady=(5, 0), sticky="nw")
+            label.grid(column=column, row=row,
+                    padx=(5, 5), pady=(5, 0), sticky="nw")
         
         # Create the read button
         self.info_read_button = ctk.CTkButton(
@@ -34,6 +34,6 @@ class InfoPanel(ctk.CTkFrame):
                 general_logic.check_config, self, at_command, LOADING, ALL_BUTTONS)
         )
         self.info_read_button.grid(
-            column=0, row=0, padx=(5, 0), pady=(5, 0), sticky="we")
+            column=0, row=0, padx=(5, 5), pady=(5, 0), sticky="we")
         
         ALL_BUTTONS.append(self.info_read_button)

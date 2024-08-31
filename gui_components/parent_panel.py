@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from gui_components.info_panel import InfoPanel
+from gui_components.edit_panel import EditPanel
 
 
 class Panel(ctk.CTkFrame):
@@ -35,10 +36,13 @@ class Panel(ctk.CTkFrame):
                             columnspan=number_of_columns, sticky="nsew")
         
         # Create the info panel
-        self.info_panel = InfoPanel(master=self, column=0, row= 1, LOADING=LOADING, at_command=at_command, ALL_BUTTONS=ALL_BUTTONS)
+        self.info_panel = InfoPanel(
+            master=self, column=0, row= 1, LOADING=LOADING,
+            at_command=at_command, ALL_BUTTONS=ALL_BUTTONS)
 
-        # Create the edit panel
-        # if distribution == 'horizontal':
-        #     self.edit_panel = EditPanel(self, 1, 1, at_command, ALL_BUTTONS)
-        # else:
-        #     self.edit_panel = EditPanel(self, 0, 2, at_command, ALL_BUTTONS)
+        if len(at_command['send_parameters']) > 0:
+            # Create the edit panel
+            if distribution == 'horizontal':
+                self.edit_panel = EditPanel(self, 1, 1, at_command, LOADING, ALL_BUTTONS)
+            else:
+                self.edit_panel = EditPanel(self, 0, 2, at_command, LOADING, ALL_BUTTONS)
