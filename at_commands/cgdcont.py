@@ -1,5 +1,8 @@
 cgdcont = {
     'title': 'PDP Context Definition',
+
+    'short_name': 'PDP Context',
+
     'commands': {
         'check': 'AT+CGDCONT?',
         'set': 'AT+CGDCONT=',

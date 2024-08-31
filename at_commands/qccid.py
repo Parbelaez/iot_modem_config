@@ -1,5 +1,8 @@
 qccid = {
-    'title': 'ICCID (Integrated Circuit Card Identifier)',
+    'title': 'ICCID (Integrated Circuit Card ID)',
+
+    'short_name': 'ICCID',
+
     'commands': {
         'check': 'AT+QCCID',
     },

@@ -1,5 +1,8 @@
 creg = {
     'title': 'Network Registration Status',
+
+    'short_name': 'Network Reg.',
+
     'commands': {
         'check': 'AT+CREG?',
         'set': 'AT+CREG=',

@@ -1,5 +1,8 @@
 cops = {
     'title': 'Operator Scan and Selection',
+
+    'short_name': 'Operator',
+
     'commands': {
         'check': 'AT+COPS?',
         'set': 'AT+COPS=',

@@ -6,8 +6,6 @@ from gui_logic.ati_cgsn_cclk_check import initialize_info
 from gui_components.parent_panel import Panel
 import at_commands
 
-LOADING = False
-
 
 class GeneralFrame(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
@@ -58,6 +56,9 @@ class GeneralFrame(ctk.CTkFrame):
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
+
+        LOADING = False
+        ALL_BUTTONS = []
 
         ctk.set_appearance_mode("system")
         ctk.set_default_color_theme("dark-blue")
@@ -111,27 +112,32 @@ class App(ctk.CTk):
         # Create the CIMI -IMSI- panel
         cimi_panel = Panel(
             master=self.column_0_frame, column=0, row=0,
-            distribution='horizontal', at_command=at_commands.cimi)
+            distribution='horizontal',
+            at_command=at_commands.cimi, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
         
         # # Create the QCCID -ICCID- panel
         qccid_panel = Panel(
             master=self.column_0_frame, column=0, row=1,
-            distribution='horizontal', at_command=at_commands.qccid)
+            distribution='horizontal'
+            , at_command=at_commands.qccid, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
 
         # # Create the COPS -Operator Selection- panel
         cops_panel = Panel(
             master=self.column_0_frame, column=0, row=2,
-            distribution='horizontal', at_command=at_commands.cops)
+            distribution='horizontal',
+            at_command=at_commands.cops, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
         
         # Create the GDCONT -PDP Context- panel
         cgdcont_panel = Panel(
             master=self.column_0_frame, column=0, row=3,
-            distribution='horizontal', at_command=at_commands.cgdcont)
+            distribution='horizontal',
+            at_command=at_commands.cgdcont, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
         
         # Create the CREG -Network Registration- panel
         creg_panel = Panel(
             master=self.column_1_frame, column=0, row=0,
-            distribution='vertical', at_command=at_commands.creg)
+            distribution='vertical',
+            at_command=at_commands.creg, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
 
         # Load the modem information
         # self.start_thread(initialize_info, self.gral_frame, LOADING)

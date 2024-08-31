@@ -1,5 +1,8 @@
 'command_name' = {
     'title': '',
+
+    'short_name': '',
+
     'commands': {
         'check': 'AT+QIACT?',
         'set': 'AT+QIACT=',

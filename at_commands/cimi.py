@@ -1,5 +1,8 @@
 cimi = {
-    'title': 'International Mobile Subscriber Identity (IMSI)',
+    'title': 'Int. Mobile Subscriber ID (IMSI)',
+
+    'short_name': 'IMSI',
+
     'commands': {
         'check': 'AT+CIMI',
     },
