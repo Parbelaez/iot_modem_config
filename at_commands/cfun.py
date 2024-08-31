@@ -37,7 +37,7 @@ cfun = {
             '0 - Do not reset the modem',
             '1 - Reset the modem',
             ]
-        ]
+        ],
     ],
 
     'info_fields_positions': [
@@ -45,7 +45,7 @@ cfun = {
     ],
 
     'parameters_fields_positions': [
-        [1, 1],
-        [1, 2]
+        [0, 1],
+        [0, 2]
     ]
 }

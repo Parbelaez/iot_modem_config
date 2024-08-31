@@ -8,7 +8,7 @@ class EditPanel(ctk.CTkFrame):
 
         self.at_command = at_command
 
-        if len(at_command['send_parameters']) > 1:
+        if len(at_command['send_parameters']) > 1 and len(at_command['fields_names']) == len(at_command['send_parameters']):
             sticky = "nw"
         else:
             sticky = "nwe"
@@ -41,27 +41,25 @@ class EditPanel(ctk.CTkFrame):
                     if at_command['result_fields_values'][j] == 'literal':
                         entry = ctk.CTkEntry(self)
                         entry.grid(column=column+1, row=row,
-                                padx=(5, 5), pady=(5, 0), sticky="nw")
+                                padx=(5, 5), pady=(5, 0), sticky="nwe")
                     else:
                         entry = ctk.CTkComboBox(self, values=at_command['result_fields_values'][j])
                         entry.grid(column=column+1, row=row,
-                                padx=(5, 5), pady=(5, 0), sticky="nw")
+                                padx=(5, 5), pady=(5, 0), sticky="nwe")
         if 'parameters_fields_values' in at_command:
-            print('parameters_fields_values exists')
-            for i, parameter_item in enumerate(at_command['parameters_fields_values']):
-                print('i: ', i,' - parameter_item: ', parameter_item)
-                for j,parameter_name in enumerate(at_command['parameters_fields_values'][i][0]): 
+            for i in range(0, len(at_command['parameters_fields_values'])):
+                for j, parameter_name in enumerate(at_command['parameters_fields_values'][i]):
                     for parameter in at_command['send_parameters']:
                         if parameter_name == parameter:
                             if at_command['parameters_fields_values'][i][1] == 'literal':
                                 entry = ctk.CTkEntry(self)
                                 entry.grid(column=column+1, row=row,
-                                        padx=(5, 5), pady=(5, 0), sticky="nw")
+                                        padx=(5, 5), pady=(5, 0), sticky="nwe")
                             else:
                                 entry = ctk.CTkComboBox(
                                     self, values=at_command['parameters_fields_values'][i][1])
                                 entry.grid(column=column+1, row=row,
-                                        padx=(5, 5), pady=(5, 0), sticky="nw")
+                                        padx=(5, 5), pady=(5, 0), sticky="nwe")
         edit_button = ctk.CTkButton(
             self, text=f'Set {at_command['short_name']}', fg_color="lightblue4",
             command=lambda: self.start_thread(

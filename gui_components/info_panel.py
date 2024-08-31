@@ -10,7 +10,7 @@ class InfoPanel(ctk.CTkFrame):
         # self.column = column
         # self.row = row
 
-        self.grid(column=column, row=row, sticky="nw",
+        self.grid(column=column, row=row, sticky="nwe",
                     padx=10, pady=(10, 5))
         
         # Create the labels
