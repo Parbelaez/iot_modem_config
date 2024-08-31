@@ -15,7 +15,7 @@ class GeneralFrame(ctk.CTkFrame):
 
         # Configure rows and columns of the GeneralFrame to expand
         self.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
-        self.grid_columnconfigure((0, 1, 2), weight=1)
+        self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure((0, 1), weight=0)
         self.grid_rowconfigure(2, weight=1)
 
@@ -24,15 +24,14 @@ class GeneralFrame(ctk.CTkFrame):
                                         text="Loading modem information...",
                                         font=('Helvetica', 24, 'bold'),
                                         padx=10, pady=10)
-        self.welcome_label.grid(column=0, columnspan=3, row=0, sticky="nsew")
+        self.welcome_label.grid(column=0, row=0, sticky="nsew")
 
         # Create the extra information frame
         self.extra_info_frame = ctk.CTkFrame(self)
-        self.extra_info_frame.grid(column=0, columnspan=3,
-                                row=1,
+        self.extra_info_frame.grid(column=0, row=1,
                                 padx=10, pady=10,
                                 sticky="n")
-        self.extra_info_frame.grid_columnconfigure((0), weight=0)
+        self.extra_info_frame.grid_columnconfigure((0, 1, 2), weight=0)
 
         # Create the clock label
         self.clock_label = ctk.CTkLabel(
@@ -83,29 +82,55 @@ class App(ctk.CTk):
 
         # Create Panels Frame
         self.panels_frame = ctk.CTkFrame(self.gral_frame)
-        self.panels_frame.grid(column=0, row=2, columnspan=3, sticky="nsew",
+        self.panels_frame.grid(column=0, row=2, sticky="nsew",
                                 padx=10, pady=10)
         self.panels_frame.grid_columnconfigure((0, 1, 2), weight=1)
         self.panels_frame.grid_rowconfigure((0, 1, 2), weight=1)
 
-        # Create the CIMI panel
+        # Create Panel Column 0
+        self.column_0_frame = ctk.CTkFrame(self.panels_frame)
+        self.column_0_frame.grid(column=0, row=0, sticky="nsew",
+                                padx=10, pady=10)
+        self.column_0_frame.grid_columnconfigure(0, weight=1)
+        self.column_0_frame.grid_rowconfigure((0, 1, 2), weight=0)
+
+        # Create Panel Column 1
+        self.column_1_frame = ctk.CTkFrame(self.panels_frame)
+        self.column_1_frame.grid(column=1, row=0, sticky="nsew",
+                                padx=10, pady=10)
+        self.column_1_frame.grid_columnconfigure(0, weight=1)
+        self.column_1_frame.grid_rowconfigure((0, 1, 2), weight=0)
+
+        # Create Panel Column 2
+        self.column_2_frame = ctk.CTkFrame(self.panels_frame)
+        self.column_2_frame.grid(column=2, row=0, sticky="nsew",
+                                padx=10, pady=10)
+        self.column_2_frame.grid_columnconfigure(0, weight=1)
+        self.column_2_frame.grid_rowconfigure((0, 1, 2), weight=0)
+
+        # Create the CIMI -IMSI- panel
         cimi_panel = Panel(
-            master=self.panels_frame, column=0, row=0,
+            master=self.column_0_frame, column=0, row=0,
             distribution='horizontal', at_command=at_commands.cimi)
         
-        # # Create the QCCID panel
+        # # Create the QCCID -ICCID- panel
         qccid_panel = Panel(
-            master=self.panels_frame, column=0, row=1,
+            master=self.column_0_frame, column=0, row=1,
             distribution='horizontal', at_command=at_commands.qccid)
 
-        # # Create the COPS panel
+        # # Create the COPS -Operator Selection- panel
         cops_panel = Panel(
-            master=self.panels_frame, column=0, row=2,
+            master=self.column_0_frame, column=0, row=2,
             distribution='horizontal', at_command=at_commands.cops)
         
-        # Create the CREG panel
+        # Create the GDCONT -PDP Context- panel
+        cgdcont_panel = Panel(
+            master=self.column_0_frame, column=0, row=3,
+            distribution='horizontal', at_command=at_commands.cgdcont)
+        
+        # Create the CREG -Network Registration- panel
         creg_panel = Panel(
-            master=self.panels_frame, column=1, row=0,
+            master=self.column_1_frame, column=0, row=0,
             distribution='vertical', at_command=at_commands.creg)
 
         # Load the modem information
