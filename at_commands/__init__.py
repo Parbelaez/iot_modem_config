@@ -5,3 +5,6 @@ from .qccid import qccid
 from .creg import creg
 from .cgdcont import cgdcont
 from .cfun import cfun
+from .qiact import qiact
+from .qideact import qideact
+from .cgatt import cgatt

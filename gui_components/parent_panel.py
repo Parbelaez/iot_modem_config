@@ -29,13 +29,14 @@ class Panel(ctk.CTkFrame):
         
         self.title_label = ctk.CTkLabel(self, text=at_command['title'], font=('Helvetica', 12, 'bold'))
         self.title_label.grid(column=0, row=0, 
-                            padx=10, pady=10,
+                            padx=10, pady=(10, 0),
                             columnspan=number_of_columns, sticky="nsew")
         
-        # Create the info panel
-        self.info_panel = InfoPanel(
-            master=self, column=0, row= 1, LOADING=LOADING,
-            at_command=at_command, ALL_BUTTONS=ALL_BUTTONS)
+        if len(at_command['fields_names']) > 0:
+            # Create the info panel
+            self.info_panel = InfoPanel(
+                master=self, column=0, row= 1, LOADING=LOADING,
+                at_command=at_command, ALL_BUTTONS=ALL_BUTTONS)
 
         if len(at_command['send_parameters']) > 0:
             # Create the edit panel

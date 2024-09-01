@@ -10,7 +10,7 @@ class InfoPanel(ctk.CTkFrame):
         # self.column = column
         # self.row = row
 
-        self.grid(column=column, row=row, sticky="nwe",
+        self.grid(column=column, row=row, sticky="wen",
                     padx=10, pady=(10, 5))
         
         # Create the labels
@@ -31,17 +31,21 @@ class InfoPanel(ctk.CTkFrame):
         # Create the read button
         if len(at_command['fields_names']) == 1 and at_command['short_name'] not in ['IMSI', 'ICCID']:
             button_column = 1
-            button_row = 0
             label.grid(column=0, row=0, padx=(5, 5), pady=(5, 5), sticky="nw")
         else:
             button_column = 0
-            button_row = 0
 
         self.info_read_button = ctk.CTkButton(
             self, text=f'Check {at_command['short_name']}', command=lambda: self.start_thread(
                 general_logic.check_config, self, at_command, LOADING, ALL_BUTTONS)
         )
+        columnspan = self.grid_size()[0]
         self.info_read_button.grid(
-            column=button_column, row=button_row, padx=(5, 5), pady=(5, 5), sticky="we")
+            column=button_column, row=0, columnspan=columnspan, padx=(5, 5), pady=(5, 5), sticky="wen")
+        
+        # Configure the columns to expand
+        # after the whole panel has been created
+        for col in range(self.grid_size()[0]):
+            self.grid_columnconfigure(col, weight=1)
         
         ALL_BUTTONS.append(self.info_read_button)

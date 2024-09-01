@@ -112,7 +112,7 @@ class App(ctk.CTk):
         # Create a subpanel for IMSI and ICCID
         self.imsi_iccid_panel = ctk.CTkFrame(self.column_0_frame)
         self.imsi_iccid_panel.grid(column=0, row=0, sticky="ns",
-                                padx=10, pady=10)
+                                padx=10, pady=20)
         self.imsi_iccid_panel.grid_columnconfigure((0, 1), weight=1)
         # Create the CIMI -IMSI- panel
         cimi_panel = Panel(
@@ -133,14 +133,14 @@ class App(ctk.CTk):
             master=self.column_0_frame, column=0, row=1,
             distribution='horizontal',
             at_command=at_commands.cops, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
-        cops_panel.grid(column=0, row=1, columnspan=2, padx=10, pady=10, sticky="nwe")
+        cops_panel.grid(column=0, row=1, columnspan=2, padx=20, pady=(40, 30), sticky="nwe")
         
         # Create the GDCONT -PDP Context- panel
         cgdcont_panel = Panel(
             master=self.column_0_frame, column=0, row=2,
             distribution='horizontal',
             at_command=at_commands.cgdcont, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
-        cgdcont_panel.grid(column=0, row=2, columnspan=2, padx=10, pady=10, sticky="nw")
+        cgdcont_panel.grid(column=0, row=2, columnspan=2, padx=20, pady=(30, 0), sticky="nw")
         
         # Create the CREG -Network Registration- panel
         creg_panel = Panel(
@@ -155,6 +155,30 @@ class App(ctk.CTk):
             distribution='vertical',
             at_command=at_commands.cfun, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
         cfun_panel.grid(column=0, row=1, padx=10, pady=10, sticky="nwe")
+
+        # Create the QIACT -PDP Context Activation- panel
+        qiact_panel = Panel(
+            master=self.column_1_frame, column=0, row=2,
+            distribution='horizontal',
+            at_command=at_commands.qiact, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
+        qiact_panel.edit_panel.entries[1].set("1 - Activated")
+        qiact_panel.edit_panel.entries[1].configure(state="disabled")
+
+        # Create the CGATT -Attach or Detach- panel
+        cgatt_panel = Panel(
+            master=self.column_2_frame, column=0, row=0,
+            distribution='vertical',
+            at_command=at_commands.cgatt, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
+
+        
+        # Create the QIDEACT -PDP Context Deactivation- panel
+        qideact_panel = Panel(
+            master=self.column_1_frame, column=0, row=3,
+            distribution='horizontal',
+            at_command=at_commands.qideact, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
+        qideact_panel.grid(sticky="ns", pady=0)
+        qideact_panel.title_label.grid(pady=(0, 0))
+        qideact_panel.edit_panel.grid(pady=(0, 5))
 
         #Load the modem information
         # self.start_thread(initialize_info, self.gral_frame, LOADING)
