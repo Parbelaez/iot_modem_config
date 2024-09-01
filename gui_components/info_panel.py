@@ -8,8 +8,7 @@ class InfoPanel(ctk.CTkFrame):
         super().__init__(master, **kwargs)
         
         self.at_command = at_command
-        # self.column = column
-        # self.row = row
+        self.ALL_BUTTONS = ALL_BUTTONS
 
         self.grid(column=column, row=row, sticky="wen",
                     padx=10, pady=(10, 5))
@@ -38,8 +37,9 @@ class InfoPanel(ctk.CTkFrame):
 
         self.info_read_button = ctk.CTkButton(
             self, text=f'Check {at_command['short_name']}', command=lambda: start_thread(
-                general_logic.check_config, self, at_command, LOADING, ALL_BUTTONS)
+                general_logic.check_config, self, at_command, LOADING, self.ALL_BUTTONS)
         )
+        self.ALL_BUTTONS.append(self.info_read_button)
         columnspan = self.grid_size()[0]
         self.info_read_button.grid(
             column=button_column, row=0, columnspan=columnspan, padx=(5, 5), pady=(5, 5), sticky="wen")
@@ -48,5 +48,3 @@ class InfoPanel(ctk.CTkFrame):
         # after the whole panel has been created
         for col in range(self.grid_size()[0]):
             self.grid_columnconfigure(col, weight=1)
-        
-        ALL_BUTTONS.append(self.info_read_button)

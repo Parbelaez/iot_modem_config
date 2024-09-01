@@ -180,6 +180,9 @@ class App(ctk.CTk):
         qideact_panel.title_label.grid(pady=(0, 0))
         qideact_panel.edit_panel.grid(pady=(0, 5))
 
+        for button in ALL_BUTTONS:
+            print('MAIN ALL BUTTONS: ', button.cget('text'))
+
         #Load the modem information
         # self.start_thread(initialize_info, self.gral_frame, LOADING)
 

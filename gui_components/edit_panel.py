@@ -7,6 +7,7 @@ class EditPanel(ctk.CTkFrame):
         super().__init__(master, **kwargs)
 
         self.at_command = at_command
+        self.ALL_BUTTONS = ALL_BUTTONS
 
         if len(at_command['send_parameters']) > 1 and len(at_command['fields_names']) == len(at_command['send_parameters']):
             sticky = "nw"
@@ -79,8 +80,9 @@ class EditPanel(ctk.CTkFrame):
         edit_button = ctk.CTkButton(
             self, text=f'Set {at_command['short_name']}', fg_color="lightblue4",
             command=lambda: self.start_thread(
-                set_config, self, at_command, LOADING, ALL_BUTTONS)
+                set_config, self, at_command, LOADING, self.ALL_BUTTONS)
         )
+        self.ALL_BUTTONS.append(edit_button)
         if len(at_command['send_parameters']) > 1:
             edit_button.grid(
                 column=1, row=row+1, padx=(5, 5), pady=(5, 5), sticky="we")

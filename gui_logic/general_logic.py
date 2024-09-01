@@ -1,16 +1,21 @@
 import customtkinter as ctk
 from time import sleep
 from comms.ssh_to_serial import send_at_command_and_get_response
+from gui_logic.update_buttons import update_buttons_states
 
 
 def check_config(panel, at_command, LOADING, ALL_BUTTONS):
 
     LOADING = LOADING
-    ALL_BUTTONS = ALL_BUTTONS
+    print('Check Config: ', ALL_BUTTONS)
+    panel.ALL_BUTTONS = ALL_BUTTONS
+
+    for button in panel.ALL_BUTTONS:
+        print('Check Config: ', button.cget('text'))
 
     LOADING = True
-    # TODO: Update button states
-    #panel.after(0, update_button_states, LOADING, ALL_BUTTONS)
+    panel.after(0, update_buttons_states, LOADING, panel.ALL_BUTTONS)
+
     """
     Check the configuration of the device
     """
@@ -78,7 +83,7 @@ def check_config(panel, at_command, LOADING, ALL_BUTTONS):
             label.configure(text=f"{label.cget('text').split(':')[0]}: error")
     LOADING = False
     # Schedule UI update on the main thread
-    # panel.after(0, update_button_states, self, LOADING, all_buttons)
+    panel.after(0, update_buttons_states, LOADING, panel.ALL_BUTTONS)
     # panel.after(0, update_combos, self)
 
 

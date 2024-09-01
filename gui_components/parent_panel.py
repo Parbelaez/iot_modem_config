@@ -8,7 +8,10 @@ class Panel(ctk.CTkFrame):
     def __init__(self, master, column, row, distribution, at_command, LOADING, ALL_BUTTONS, **kwargs):
         super().__init__(master, **kwargs)
 
+        for button in ALL_BUTTONS:
+            print('Panel Creation: ', button.cget('text'))
         self.at_command = at_command
+        self.ALL_BUTTONS = ALL_BUTTONS
 
         # Default number of columns
         number_of_columns = 1
@@ -37,14 +40,16 @@ class Panel(ctk.CTkFrame):
             # Create the info panel
             self.info_panel = InfoPanel(
                 master=self, column=0, row= 1, LOADING=LOADING,
-                at_command=at_command, ALL_BUTTONS=ALL_BUTTONS)
+                at_command=at_command, ALL_BUTTONS=self.ALL_BUTTONS)
 
         if len(at_command['send_parameters']) > 0:
             # Create the edit panel
             if distribution == 'horizontal':
-                self.edit_panel = EditPanel(self, 1, 1, at_command, LOADING, ALL_BUTTONS)
+                self.edit_panel = EditPanel(
+                    self, 1, 1, at_command, LOADING, self.ALL_BUTTONS)
             else:
-                self.edit_panel = EditPanel(self, 0, 2, at_command, LOADING, ALL_BUTTONS)
+                self.edit_panel = EditPanel(
+                    self, 0, 2, at_command, LOADING, self.ALL_BUTTONS)
     
     # Start a thread method
     def start_thread(self, target, *args):
