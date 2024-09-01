@@ -8,8 +8,6 @@ class Panel(ctk.CTkFrame):
     def __init__(self, master, column, row, distribution, at_command, LOADING, ALL_BUTTONS, **kwargs):
         super().__init__(master, **kwargs)
 
-        for button in ALL_BUTTONS:
-            print('Panel Creation: ', button.cget('text'))
         self.at_command = at_command
         self.ALL_BUTTONS = ALL_BUTTONS
 

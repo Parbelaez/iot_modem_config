@@ -7,11 +7,7 @@ from gui_logic.update_buttons import update_buttons_states
 def check_config(panel, at_command, LOADING, ALL_BUTTONS):
 
     LOADING = LOADING
-    print('Check Config: ', ALL_BUTTONS)
     panel.ALL_BUTTONS = ALL_BUTTONS
-
-    for button in panel.ALL_BUTTONS:
-        print('Check Config: ', button.cget('text'))
 
     LOADING = True
     panel.after(0, update_buttons_states, LOADING, panel.ALL_BUTTONS)
