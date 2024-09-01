@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from gui_logic import general_logic
+from gui_logic.start_thread import start_thread
 
 
 class InfoPanel(ctk.CTkFrame):
@@ -36,7 +37,7 @@ class InfoPanel(ctk.CTkFrame):
             button_column = 0
 
         self.info_read_button = ctk.CTkButton(
-            self, text=f'Check {at_command['short_name']}', command=lambda: self.start_thread(
+            self, text=f'Check {at_command['short_name']}', command=lambda: start_thread(
                 general_logic.check_config, self, at_command, LOADING, ALL_BUTTONS)
         )
         columnspan = self.grid_size()[0]

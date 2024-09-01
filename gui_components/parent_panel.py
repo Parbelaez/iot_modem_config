@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from gui_components.info_panel import InfoPanel
 from gui_components.edit_panel import EditPanel
+import threading
 
 
 class Panel(ctk.CTkFrame):
@@ -44,3 +45,7 @@ class Panel(ctk.CTkFrame):
                 self.edit_panel = EditPanel(self, 1, 1, at_command, LOADING, ALL_BUTTONS)
             else:
                 self.edit_panel = EditPanel(self, 0, 2, at_command, LOADING, ALL_BUTTONS)
+    
+    # Start a thread method
+    def start_thread(self, target, *args):
+        threading.Thread(target=target, args=args).start()
