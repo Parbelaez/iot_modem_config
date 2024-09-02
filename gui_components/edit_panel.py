@@ -3,7 +3,8 @@ from gui_logic.general_logic import set_config
 
 
 class EditPanel(ctk.CTkFrame):
-    def __init__(self, master, column, row, at_command, LOADING, ALL_BUTTONS, **kwargs):
+    def __init__(self, master, column, row, at_command,
+                 LOADING, ALL_BUTTONS, **kwargs):
         super().__init__(master, **kwargs)
 
         self.at_command = at_command

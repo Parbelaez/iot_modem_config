@@ -2,9 +2,10 @@ import customtkinter as ctk
 from time import sleep
 from comms.ssh_to_serial import send_at_command_and_get_response
 from gui_logic.update_buttons import update_buttons_states
+from gui_logic.update_entries import update_entries_texts
 
 
-def check_config(panel, at_command, LOADING, ALL_BUTTONS):
+def check_config(panel, master, at_command, LOADING, ALL_BUTTONS):
 
     LOADING = LOADING
     panel.ALL_BUTTONS = ALL_BUTTONS
@@ -23,9 +24,7 @@ def check_config(panel, at_command, LOADING, ALL_BUTTONS):
         sleep(0.5)
     # Send the check at command
     try:
-        print(at_command['commands']['check'])
         response = send_at_command_and_get_response(at_command['commands']['check'])
-        print(response)
         sleep(1)
     except Exception as e:
         response = None
@@ -43,8 +42,6 @@ def check_config(panel, at_command, LOADING, ALL_BUTTONS):
                     for j in range(len(panel.info_labels)-i):
                         panel.info_labels[i+j].configure(
                             text=f"{panel.info_labels[i+j].cget('text').split(':')[0]}: NA")
-                    print('fields_text: ', fields_text)
-                    print('Breaking...')
                     break_outer_loop = True
                 # Checks if the field is a literal or a value
                 if at_command['result_fields_values'][i] == 'literal':
@@ -66,6 +63,16 @@ def check_config(panel, at_command, LOADING, ALL_BUTTONS):
                 field_value = text
                 label.configure(
                     text=f"{label_name}: {field_value}")
+                # Update the entries of the EditPanel according to the
+                # received values for the InfoPanel
+                for i, entry_label in enumerate(master.edit_panel.edit_labels):
+                    if entry_label.cget('text')[:-1] == label_name:
+                        entry = master.edit_panel.entries[i]
+                        if isinstance(entry, ctk.CTkComboBox):
+                            entry.set(text)
+                        else:
+                            entry.delete(0, ctk.END)
+                            entry.insert(0, text)
                 if break_outer_loop:
                     break
         else:
@@ -77,7 +84,9 @@ def check_config(panel, at_command, LOADING, ALL_BUTTONS):
     else:
         for label in panel.info_labels:
             label.configure(text=f"{label.cget('text').split(':')[0]}: error")
+
     LOADING = False
+    # panel.after(0, update_entries_texts, panel, master, at_command)
     # Schedule UI update on the main thread
     panel.after(0, update_buttons_states, LOADING, panel.ALL_BUTTONS)
     # panel.after(0, update_combos, self)
