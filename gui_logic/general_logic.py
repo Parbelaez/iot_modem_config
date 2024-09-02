@@ -64,14 +64,15 @@ def check_config(panel, master, at_command, LOADING, ALL_BUTTONS):
                     text=f"{label_name}: {field_value}")
                 # Update the entries of the EditPanel according to the
                 # received values for the InfoPanel
-                for i, entry_label in enumerate(master.edit_panel.edit_labels):
-                    if entry_label.cget('text')[:-1] == label_name:
-                        entry = master.edit_panel.entries[i]
-                        if isinstance(entry, ctk.CTkComboBox):
-                            entry.set(text)
-                        else:
-                            entry.delete(0, ctk.END)
-                            entry.insert(0, text)
+                if hasattr(master, 'edit_panel'):
+                    for i, entry_label in enumerate(master.edit_panel.edit_labels):
+                        if entry_label.cget('text')[:-1] == label_name:
+                            entry = master.edit_panel.entries[i]
+                            if isinstance(entry, ctk.CTkComboBox):
+                                entry.set(text)
+                            else:
+                                entry.delete(0, ctk.END)
+                                entry.insert(0, text)
                 if break_outer_loop:
                     break
         else:

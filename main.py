@@ -182,7 +182,7 @@ class App(ctk.CTk):
         qideact_panel.edit_panel.grid(pady=(0, 5))
 
         #Load the modem information
-        # self.start_thread(initialize_info, self.gral_frame, LOADING)
+        self.start_thread(initialize_info, self.gral_frame, LOADING, ALL_BUTTONS)
 
 
     # Start a thread method

@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from comms.ssh_to_serial import send_at_command_and_get_response
+from gui_logic.update_buttons import update_buttons_states
 
 
 '''
@@ -37,8 +38,9 @@ def get_cclk(self):
     return None
 
 
-def initialize_info(self, LOADING):
+def initialize_info(self, LOADING, ALL_BUTTONS):
     LOADING = True
+    self.after(0, update_buttons_states, LOADING, ALL_BUTTONS)
     # Load modem information
     get_ati(self)
     # Load the IMEI
@@ -46,6 +48,7 @@ def initialize_info(self, LOADING):
     # Load the clock
     get_cclk(self)
     LOADING = False
+    self.after(0, update_buttons_states, LOADING, ALL_BUTTONS)
     return None
 
 def main():
