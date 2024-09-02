@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from gui_logic.general_logic import set_config
+from gui_logic.start_thread import start_thread
 
 
 class EditPanel(ctk.CTkFrame):
@@ -78,17 +79,17 @@ class EditPanel(ctk.CTkFrame):
                                 entry.grid(column=column+1, row=row,
                                         padx=(5, 5), pady=(5, 0), sticky="nwe")
                             self.entries.append(entry)
-        edit_button = ctk.CTkButton(
-            self, text=f'Set {at_command['short_name']}', fg_color="lightblue4",
-            command=lambda: self.start_thread(
-                set_config, self, at_command, LOADING, self.ALL_BUTTONS)
+        self.edit_button = ctk.CTkButton(
+            self, text=f'Set {at_command["short_name"]}', fg_color="lightblue4",
+            command=lambda: start_thread(
+                set_config, self, master, at_command, LOADING, self.ALL_BUTTONS)
         )
-        self.ALL_BUTTONS.append(edit_button)
+        self.ALL_BUTTONS.append(self.edit_button)
         if len(at_command['send_parameters']) > 1:
-            edit_button.grid(
+            self.edit_button.grid(
                 column=1, row=row+1, padx=(5, 5), pady=(5, 5), sticky="we")
         else:
             label.after(0, lambda: label.destroy())
             entry.grid(column=0, row=0, padx=(5, 5), pady=(5, 5), sticky="we")
-            edit_button.grid(
+            self.edit_button.grid(
                 column=1, row=0, padx=(5, 5), pady=(5, 5), sticky="we")

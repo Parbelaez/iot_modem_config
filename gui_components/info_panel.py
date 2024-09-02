@@ -17,9 +17,7 @@ class InfoPanel(ctk.CTkFrame):
         # Create the labels
         self.labels_text = at_command['fields_names']
         self.info_labels = [
-            ctk.CTkLabel(self, text=f'{
-                label_text}: please, retrieve it')
-                for label_text in self.labels_text
+            ctk.CTkLabel(self, text=f'{label_text}: please, retrieve it', wraplength=350) for label_text in self.labels_text
         ]
 
         # Position the labels

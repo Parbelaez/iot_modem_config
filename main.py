@@ -148,6 +148,7 @@ class App(ctk.CTk):
             distribution='vertical',
             at_command=at_commands.creg, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
         creg_panel.grid(column=0, row=0, padx=10, pady=10, sticky="nwe")
+        creg_panel.info_panel.info_labels[0].grid(columnspan=2)
         
         # Create the CFUN -Modem Functionality- panel
         cfun_panel = Panel(

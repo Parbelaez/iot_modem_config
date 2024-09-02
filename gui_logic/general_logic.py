@@ -2,7 +2,6 @@ import customtkinter as ctk
 from time import sleep
 from comms.ssh_to_serial import send_at_command_and_get_response
 from gui_logic.update_buttons import update_buttons_states
-from gui_logic.update_entries import update_entries_texts
 
 
 def check_config(panel, master, at_command, LOADING, ALL_BUTTONS):
@@ -86,11 +85,67 @@ def check_config(panel, master, at_command, LOADING, ALL_BUTTONS):
             label.configure(text=f"{label.cget('text').split(':')[0]}: error")
 
     LOADING = False
-    # panel.after(0, update_entries_texts, panel, master, at_command)
     # Schedule UI update on the main thread
     panel.after(0, update_buttons_states, LOADING, panel.ALL_BUTTONS)
-    # panel.after(0, update_combos, self)
 
 
-def set_config():
-    pass
+def set_config(panel, master, at_command, LOADING, ALL_BUTTONS):
+    parameters = []
+    for entry in panel.entries:
+        entry.configure(state="disabled")
+    
+    for entry in panel.entries:
+        entry_text = entry.get()
+        if entry_text == 'Enter Option':
+            panel.edit_button.configure(
+                text=f'Please, select an option', fg_color="red")
+            sleep(2)
+            panel.edit_button.configure(
+                text=f'Set {at_command['short_name']}', fg_color="lightblue4")
+        else:
+            if entry_text.split(' - ')[0] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']:
+                parameter = entry_text.split(' - ')[0]
+                print(parameter)
+            else:
+                parameter = entry_text
+            parameters.append(parameter)
+    at_command_to_send = at_command['commands']['set']
+    for parameter in parameters:
+        at_command_to_send += parameter + ','
+    if at_command_to_send[-1] == ',':
+        at_command_to_send = at_command_to_send[:-1]
+
+    LOADING = True
+    panel.after(0, update_buttons_states, LOADING, ALL_BUTTONS)
+    panel.edit_button.configure(text=f'Setting {at_command["short_name"]}...')
+
+    try:
+        response = send_at_command_and_get_response(at_command_to_send)
+        sleep(1)
+    except Exception as e:
+        response = None
+        print(e)
+    if response:
+        if not isinstance(response, list):
+            response = [response]
+        if response[0] == 'OK':
+            panel.edit_button.configure(
+                text=f'{at_command["short_name"]}  set', fg_color="green")
+            sleep(2)
+            check_config(master.info_panel, master, at_command, LOADING, ALL_BUTTONS)
+            panel.edit_button.configure(
+                text=f'Set {at_command["short_name"]}', fg_color="lightblue4")
+        else:
+            panel.edit_button.configure(
+                text=f'Error setting {at_command["short_name"]}', fg_color="red")
+            sleep(2)
+            panel.edit_button.configure(
+                text=f'Set {at_command["short_name"]}', fg_color="lightblue4")
+    else:
+        panel.edit_button.configure(
+            text=f'Error setting {at_command["short_name"]}', fg_color="red")
+        sleep(2)
+        panel.edit_button.configure(
+            text=f'Set {at_command["short_name"]}', fg_color="lightblue4")
+    LOADING = False
+    panel.after(0, update_buttons_states, LOADING, ALL_BUTTONS)
