@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 import threading
 from gui_logic.ati_cgsn_cclk_check import initialize_info
 from gui_components.parent_panel import Panel
+from gui_logic.update_buttons import update_buttons_states
 import at_commands
 
 
@@ -107,7 +108,8 @@ class App(ctk.CTk):
         self.column_2_frame.grid(column=2, row=0, sticky="nsew",
                                 padx=10, pady=10)
         self.column_2_frame.grid_columnconfigure(0, weight=1)
-        self.column_2_frame.grid_rowconfigure((0, 1, 2), weight=0)
+        self.column_2_frame.grid_rowconfigure(0, weight=0)
+        self.column_2_frame.grid_rowconfigure(1, weight=1)
 
         # Create a subpanel for IMSI and ICCID
         self.imsi_iccid_panel = ctk.CTkFrame(self.column_0_frame)
@@ -165,13 +167,6 @@ class App(ctk.CTk):
         qiact_panel.edit_panel.entries[1].set("1 - Activated")
         qiact_panel.edit_panel.entries[1].configure(state="disabled")
 
-        # Create the CGATT -Attach or Detach- panel
-        cgatt_panel = Panel(
-            master=self.column_2_frame, column=0, row=0,
-            distribution='vertical',
-            at_command=at_commands.cgatt, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
-
-        
         # Create the QIDEACT -PDP Context Deactivation- panel
         qideact_panel = Panel(
             master=self.column_1_frame, column=0, row=3,
@@ -181,8 +176,25 @@ class App(ctk.CTk):
         qideact_panel.title_label.grid(pady=(0, 0))
         qideact_panel.edit_panel.grid(pady=(0, 5))
 
+        # Create the CGATT -Attach or Detach- panel
+        cgatt_panel = Panel(
+            master=self.column_2_frame, column=0, row=0,
+            distribution='vertical',
+            at_command=at_commands.cgatt, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
+
+        # Create the ping panel
+        qping_panel = Panel(
+            master=self.column_2_frame, column=0, row=1,
+            distribution='horizontal',
+            at_command=at_commands.qping, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
+        qping_panel.grid(sticky="wens", rowspan=2)
+        qping_panel.edit_panel.grid(column=0, columnspan=2, sticky="wens", pady=(0, 5))
+        qping_panel.rowconfigure(0, weight=0)
+        qping_panel.rowconfigure(1, weight=1)
+
         #Load the modem information
         self.start_thread(initialize_info, self.gral_frame, LOADING, ALL_BUTTONS)
+        # self.start_thread(update_buttons_states, LOADING, ALL_BUTTONS)
 
 
     # Start a thread method

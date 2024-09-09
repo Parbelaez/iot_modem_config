@@ -4,6 +4,19 @@ from comms.ssh_to_serial import send_at_command_and_get_response
 from gui_logic.update_buttons import update_buttons_states
 
 
+def ping_response(response, panel):
+    text_to_display = ''
+    for response_item in response:
+        if response_item == 'OK':
+            response_item = ''
+        elif response_item.startswith('+QPING'):
+            response_item = '\n' + response_item
+        text_to_display += response_item + ','
+
+    # Remove the trailing comma and insert the text into the text box
+    text_to_display = text_to_display.strip(',')
+    panel.text_box.insert(ctk.END, text_to_display)
+
 def check_config(panel, master, at_command, LOADING, ALL_BUTTONS):
 
     LOADING = LOADING
@@ -23,6 +36,7 @@ def check_config(panel, master, at_command, LOADING, ALL_BUTTONS):
         sleep(0.5)
     # Send the check at command
     try:
+
         response = send_at_command_and_get_response(at_command['commands']['check'])
         sleep(1)
     except Exception as e:
@@ -94,7 +108,7 @@ def set_config(panel, master, at_command, LOADING, ALL_BUTTONS):
     parameters = []
     for entry in panel.entries:
         entry.configure(state="disabled")
-    
+
     for entry in panel.entries:
         entry_text = entry.get()
         if entry_text == 'Enter Option':
@@ -103,18 +117,26 @@ def set_config(panel, master, at_command, LOADING, ALL_BUTTONS):
             sleep(2)
             panel.edit_button.configure(
                 text=f'Set {at_command['short_name']}', fg_color="lightblue4")
+            for entry in panel.entries:
+                entry.configure(state="normal")
         else:
-            if entry_text.split(' - ')[0] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']:
+            print('Check index: ', entry_text.split(' - ')[0])
+            print('Type: ', type(entry_text.split(' - ')[0]))
+            print('len: ', len(entry_text.split(' - ')))
+            if entry_text.split(' - ')[0] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] and len(entry_text.split(' - ')) >= 2:
+                print('Index int and more than 2')
                 parameter = entry_text.split(' - ')[0]
-                print(parameter)
+                print('Parameter: ', parameter)
             else:
                 parameter = entry_text
             parameters.append(parameter)
     at_command_to_send = at_command['commands']['set']
+    print('at_command_to_send: ', at_command_to_send)
     for parameter in parameters:
         at_command_to_send += parameter + ','
     if at_command_to_send[-1] == ',':
         at_command_to_send = at_command_to_send[:-1]
+    print('at_command_to_send: ', at_command_to_send)
 
     LOADING = True
     panel.after(0, update_buttons_states, LOADING, ALL_BUTTONS)
@@ -133,20 +155,33 @@ def set_config(panel, master, at_command, LOADING, ALL_BUTTONS):
             panel.edit_button.configure(
                 text=f'{at_command["short_name"]}  set', fg_color="green")
             sleep(2)
-            check_config(master.info_panel, master, at_command, LOADING, ALL_BUTTONS)
-            panel.edit_button.configure(
-                text=f'Set {at_command["short_name"]}', fg_color="lightblue4")
+            # Check if the command is a test command or a set command
+            if 'type' in at_command:
+                match at_command['short_name']:
+                    case 'PING':
+                        ping_response(response, panel)
+                panel.edit_button.configure(
+                    text=f'Set {at_command["short_name"]}', fg_color="lightblue4")
+            else:
+                check_config(master.info_panel, master,
+                                at_command, LOADING, ALL_BUTTONS)
+                panel.edit_button.configure(
+                    text=f'Set {at_command["short_name"]}', fg_color="lightblue4")
         else:
             panel.edit_button.configure(
                 text=f'Error setting {at_command["short_name"]}', fg_color="red")
             sleep(2)
             panel.edit_button.configure(
                 text=f'Set {at_command["short_name"]}', fg_color="lightblue4")
+            for entry in panel.entries:
+                entry.configure(state="normal")
     else:
         panel.edit_button.configure(
             text=f'Error setting {at_command["short_name"]}', fg_color="red")
         sleep(2)
         panel.edit_button.configure(
             text=f'Set {at_command["short_name"]}', fg_color="lightblue4")
+        for entry in panel.entries:
+            entry.configure(state="normal")
     LOADING = False
     panel.after(0, update_buttons_states, LOADING, ALL_BUTTONS)
