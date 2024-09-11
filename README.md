@@ -350,3 +350,10 @@ Tsk are more modern widgets for a much better appearance, but both: Tk and Tty, 
 More info on how to work with Tkinter on: https://docs.python.org/3/library/tkinter.html#
 
 
+## Thanks to:
+
+### Icons
+<a href="https://www.flaticon.com/free-icons/join" title="join icons">Join icons created by riajulislam - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/reference" title="reference icons">Reference icons created by riajulislam - Flaticon</a>
+
+And Chat GPT for the App Icon.

@@ -6,6 +6,7 @@ from gui_logic.ati_cgsn_cclk_check import initialize_info
 from gui_components.parent_panel import Panel
 from gui_logic.update_buttons import update_buttons_states
 import at_commands
+from comms.ssh_connection_send_at import SSHConnection
 
 
 class GeneralFrame(ctk.CTkFrame):
@@ -60,6 +61,8 @@ class App(ctk.CTk):
 
         LOADING = False
         ALL_BUTTONS = []
+        ssh = SSHConnection()
+        connected = ssh.connect()
 
         ctk.set_appearance_mode("system")
         ctk.set_default_color_theme("dark-blue")
@@ -94,7 +97,7 @@ class App(ctk.CTk):
         self.column_0_frame.grid(column=0, row=0, sticky="nsew",
                                 padx=10, pady=10)
         self.column_0_frame.grid_columnconfigure(0, weight=1)
-        self.column_0_frame.grid_rowconfigure((0, 1, 2), weight=0)
+        self.column_0_frame.grid_rowconfigure((0, 1, 2, 3), weight=0)
 
         # Create Panel Column 1
         self.column_1_frame = ctk.CTkFrame(self.panels_frame)
@@ -111,10 +114,51 @@ class App(ctk.CTk):
         self.column_2_frame.grid_rowconfigure(0, weight=0)
         self.column_2_frame.grid_rowconfigure(1, weight=1)
 
+        # Create the connected frame
+        self.connected_frame = ctk.CTkFrame(self.column_0_frame)
+        self.connected_frame.grid(column=0, row=0, sticky="n",
+                                padx=10, pady=(20, 10))
+        self.connected_frame.grid_columnconfigure(0, weight=0)
+        self.connected_frame.grid_columnconfigure(1, weight=1)
+        self.connected_frame.grid_rowconfigure(0, weight=0)
+
+        if connected:
+            # Create connected image
+            connected_image_path = os.path.join("assets", "connected.png")
+            if os.path.exists(connected_image_path):
+                connected_image = ctk.CTkImage(light_image=Image.open(connected_image_path),
+                                            dark_image=Image.open(connected_image_path),
+                                            size=(30, 30))
+                self.connected_image_label = ctk.CTkLabel(
+                    self.connected_frame, image=connected_image, text="")
+                self.connected_image_label.grid(column=0, row=0, padx=10, pady=10)
+            else:
+                print("Connected image not found, skipping connected image setup.")
+        else:
+            # Create disconnected image
+            disconnected_image_path = os.path.join("assets", "disconnected.png")
+            if os.path.exists(disconnected_image_path):
+                disconnected_image = ctk.CTkImage(
+                                            light_image=Image.open(disconnected_image_path),
+                                            dark_image=Image.open(disconnected_image_path),
+                                            size=(30, 30))
+                self.disconnected_image_label = ctk.CTkLabel(
+                    self.connected_frame, image=disconnected_image, text="")
+                self.disconnected_image_label.grid(
+                    column=0, row=0, padx=10, pady=10)
+            else:
+                print("Disconnected image not found, skipping disconnected image setup.")
+        
+        # Create connected label
+        connected_text = f"Connected to {ssh.host}" if connected else "Not connected"
+        self.connected_label = ctk.CTkLabel(self.connected_frame, text=connected_text)
+        self.connected_label.grid(column=1, row=0, padx=10, pady=10)
+            
+
         # Create a subpanel for IMSI and ICCID
         self.imsi_iccid_panel = ctk.CTkFrame(self.column_0_frame)
-        self.imsi_iccid_panel.grid(column=0, row=0, sticky="ns",
-                                padx=10, pady=20)
+        self.imsi_iccid_panel.grid(column=0, row=1, sticky="n",
+                                padx=10, pady=10)
         self.imsi_iccid_panel.grid_columnconfigure((0, 1), weight=1)
         # Create the CIMI -IMSI- panel
         cimi_panel = Panel(
@@ -132,17 +176,17 @@ class App(ctk.CTk):
 
         # # Create the COPS -Operator Selection- panel
         cops_panel = Panel(
-            master=self.column_0_frame, column=0, row=1,
+            master=self.column_0_frame, column=0, row=2,
             distribution='horizontal',
             at_command=at_commands.cops, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
-        cops_panel.grid(column=0, row=1, columnspan=2, padx=20, pady=(40, 30), sticky="nwe")
+        cops_panel.grid(column=0, row=2, columnspan=2, padx=20, pady=10, sticky="nwe")
         
         # Create the GDCONT -PDP Context- panel
         cgdcont_panel = Panel(
-            master=self.column_0_frame, column=0, row=2,
+            master=self.column_0_frame, column=0, row=3,
             distribution='horizontal',
             at_command=at_commands.cgdcont, LOADING=LOADING, ALL_BUTTONS=ALL_BUTTONS)
-        cgdcont_panel.grid(column=0, row=2, columnspan=2, padx=20, pady=(30, 0), sticky="nw")
+        cgdcont_panel.grid(column=0, row=3, columnspan=2, padx=20, pady=10, sticky="nw")
         
         # Create the CREG -Network Registration- panel
         creg_panel = Panel(
@@ -191,6 +235,9 @@ class App(ctk.CTk):
         qping_panel.edit_panel.grid(column=0, columnspan=2, sticky="wens", pady=(0, 5))
         qping_panel.rowconfigure(0, weight=0)
         qping_panel.rowconfigure(1, weight=1)
+
+        # Connect to the device
+        ssh = SSHConnection()
 
         #Load the modem information
         self.start_thread(initialize_info, self.gral_frame, LOADING, ALL_BUTTONS)
