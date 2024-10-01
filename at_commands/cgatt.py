@@ -1,5 +1,5 @@
 cgatt = {
-    'title': 'Attach or Dettach from PS',
+    'title': 'Attach or Dettach from PS (CGATT)',
 
     'short_name': 'Attach/Dettach',
 

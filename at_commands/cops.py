@@ -1,5 +1,5 @@
 cops = {
-    'title': 'Operator Scan and Selection',
+    'title': 'Operator Scan and Selection (COPS)',
 
     'short_name': 'Operator',
 

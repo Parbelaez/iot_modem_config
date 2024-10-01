@@ -1,5 +1,5 @@
 creg = {
-    'title': 'Network Registration Status',
+    'title': 'Network Registration Status (CREG)',
 
     'short_name': 'Network Reg.',
 

@@ -1,5 +1,5 @@
 qiact = {
-    'title': 'Activate a PDP Context',
+    'title': 'Activate a PDP Context (QIACT)',
 
     'short_name': 'PDP Act.',
 

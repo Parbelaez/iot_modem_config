@@ -1,5 +1,5 @@
 cgdcont = {
-    'title': 'PDP Context Definition',
+    'title': 'PDP Context Definition (CGDCONT)',
 
     'short_name': 'PDP Context',
 

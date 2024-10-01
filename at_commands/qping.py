@@ -1,5 +1,5 @@
 qping = {
-    'title': 'PING',
+    'title': 'PING (QPING)',
 
     'type': 'test',
 

@@ -1,5 +1,5 @@
 cfun = {
-    'title': 'Modem Functionality',
+    'title': 'Modem Functionality (CFUN)',
 
     'short_name': 'Modem Functionality',
 
